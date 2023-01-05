@@ -4,7 +4,7 @@ pipeline{
 
         stages{
 
-            stage('sonar quality status'){
+            stage('sonar quality status')   {
 
                 agent{
 
@@ -26,6 +26,17 @@ pipeline{
                 }
             }
 
+            stage('quality gate status'){
+
+                steps{
+
+                    script{
+
+                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar key1'
+
+                    }
+                }
+            }
         }
 
     
