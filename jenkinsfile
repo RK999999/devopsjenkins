@@ -71,12 +71,31 @@ pipeline{
                     script{
 
                         dir('kubernetes/myapp/') {
-
+                            
                              withEnv(['DATREE_TOKEN=b72ff5db-28c9-4519-8d79-979451bea473']) {
                             sh'helm datree test .'
                             }
                         }
 
+                    }
+                }
+            }
+
+            stage('pushing the helm chart to nexus repo'){
+
+                steps{
+
+                    script{
+                        withCredentials([string(credentialsId: 'nexus-password', variable: 'nexus-password')]){
+                            dir('kubernetes/myapp/'){
+                             sh '''
+                             helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                             tar -czvf myapp-${helmversion}.tgz myapp/
+                             curl -u admin:$nexus-password http://3.237.174.220:8081/repository/helm-repo/ --upload-file myapp-${helmversion}.tgz -v
+                             '''
+                          }
+
+                        }
                     }
                 }
             }
