@@ -87,7 +87,7 @@ pipeline{
 
                     script{
                         withCredentials([string(credentialsId: 'nexus-password', variable: 'nexus-password')]){
-                            dir('kubernetes/myapp/'){
+                            dir('kubernetes/'){
                              sh '''
                              helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
                              tar -cvzf myapp-${helmversion}.tgz myapp/
