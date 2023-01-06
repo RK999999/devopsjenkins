@@ -3,7 +3,7 @@ pipeline{
     agent any
     environment{
 
-        VERSION = "${env.BUILD.ID}"
+        VERSION = "${env.BUILD_ID}"
     }
         stages{
 
@@ -60,7 +60,7 @@ pipeline{
                         docker rmi 3.237.174.220:8083/springapp:${VERSION}
                         '''
 
-                        }
+                         }
                     }
                 }
             }
